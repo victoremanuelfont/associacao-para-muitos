@@ -4,6 +4,7 @@ import com.devsuperior.aula.dto.CategoryDTO;
 import com.devsuperior.aula.dto.ProductDTO;
 import com.devsuperior.aula.entities.Category;
 import com.devsuperior.aula.entities.Product;
+import com.devsuperior.aula.repositories.CategoryRepository;
 import com.devsuperior.aula.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     public ProductDTO insert (ProductDTO dto){
 
         Product entity = new Product();
@@ -22,8 +26,8 @@ public class ProductService {
         entity.setPrice(dto.getPrice());
 
         for(CategoryDTO catDto : dto.getCategories()){
-            Category cat = new Category();
-            cat.setId(catDto.getId());
+            Category cat = categoryRepository.getReferenceById(catDto.getId());
+           // cat.setId(catDto.getId());
             entity.getCategories().add(cat);
         }
 
